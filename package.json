@@ -1,0 +1,17 @@
+{
+  "name": "hitcounter",
+  "version": "0.0.1",
+  "description": "HitCounter for Hitless Speedruns",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hitless",
+    "speedrun",
+    "nohit",
+    "counter"
+  ],
+  "author": "Mecke_Dev",
+  "license": "MIT"
+}
