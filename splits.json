@@ -1,0 +1,90 @@
+{
+        "active_profile": [
+                "DS2 Any%",
+                "Last Giant",
+                0
+        ],
+        "-": {},
+        "No Hit Sorcery Only": {
+                "Asylum": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Quelaag": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Gargs": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Golem": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "O&S": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Pinwheel": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Nito": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Sif": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "2 Kings": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "BoC": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Gwyn": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                }
+        },
+        "DS2 Any%": {
+                "Last Giant": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                },
+                "Pursuer": {
+                        "current": 0,
+                        "diff": 0,
+                        "pb": 0,
+                        "best": 0
+                }
+        }
+}

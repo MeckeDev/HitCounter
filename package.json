@@ -4,7 +4,7 @@
   "description": "HitCounter for Hitless Speedruns",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "electron ."
   },
   "keywords": [
     "hitless",
@@ -13,5 +13,10 @@
     "counter"
   ],
   "author": "Mecke_Dev",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^16.0.6"
+  },
+  "dependencies": {
+  }
 }
