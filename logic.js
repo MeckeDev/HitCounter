@@ -34,10 +34,12 @@ async function load_splits(name){
     
             content += `
             <tr>
-                <td>${x}</td>
+                <td><input type="text" id="rename" onchange="renameKey('${x}', this.value)" placeholder="${x}"></td>
                 <!--<td><button class="btn btn-info w-100" onclick="up(${y})" type="button">↑</button></td>
                 <td><button class="btn btn-info w-100" onclick="down(${y})" type="button">↓</button></td>-->
+
                 <td><button class="btn btn-danger w-100" onclick="remove_split('${x}')" type="button">-</button></td>
+                
             </tr>`
         }
 
@@ -197,6 +199,34 @@ async function new_split(){
     location.reload()
 
 }
+
+
+async function renameKey ( oldKey, newKey ) {
+
+    var oldObj = splits[splits["active_profile"][0]]
+
+    const renameObjKey = ({oldObj, oldKey, newKey}) => {
+        const keys = Object.keys(oldObj);
+        const newObj = keys.reduce((acc, val)=>{
+          if(val === oldKey){
+              acc[newKey] = oldObj[oldKey];
+          }
+          else {
+              acc[val] = oldObj[val];
+          }
+          return acc;
+        }, {});
+      
+        return newObj;
+      };
+
+    splits[splits["active_profile"][0]] = renameObjKey({oldObj, oldKey, newKey})
+
+    const data = JSON.stringify(splits, null, 8);
+    await savefile('./splits.json', data)
+
+    location.reload()
+  }
 
 // async function up(index){
 
