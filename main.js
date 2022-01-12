@@ -1,6 +1,6 @@
 const path = require('path')
 const fs = require('fs')
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, dialog } = require('electron')
 const settings = require("./settings.json")
 const splits = require("./splits.json")
 

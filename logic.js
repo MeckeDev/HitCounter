@@ -1,6 +1,7 @@
 const fs = require('fs').promises
 const settings = require("./settings.json")
-const splits = require("./splits.json")
+var splits = require("./splits.json")
+const { dialog } = require('electron')
 
 async function savefile(file, data){
     await fs.writeFile(file, data, (err) => {
@@ -12,10 +13,12 @@ async function savefile(file, data){
 
 async function load_splits(name){
 
-    var content = ""
+    if(splits["active_profile"][0] != name){
+        splits["active_profile"] = [name, 0, 0]
+    }
 
+    var content = ""
     var values = splits[name]
-    // document.getElementById("edit").innerHTML = `<button class="btn btn-success w-100" onclick="editmode()" type="button">Edit Splits</button>`
 
     if(settings["edit"]){
 
@@ -60,7 +63,7 @@ async function load_splits(name){
 
         document.getElementById("split_table").innerHTML = `
         
-        <table class="table text-center table-dark table-striped">
+        <table class="table text-center font-weight-bold">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -78,20 +81,67 @@ async function load_splits(name){
         for (var x in values){
 
             var curr = values[x]["current"]
-            var diff = values[x]["diff"]
             var pb = values[x]["pb"]
             var best = values[x]["best"]
+            diff = curr - pb
+            if(diff >= 0){
+                pre = "+"+diff
+            }
+
+            if(diff <= 0){
+                var color = "text-success"
+                var pre = ""
+            }
+            else{
+                var color = "text-danger"
+                var pre = "+"
+            }
+
+            if(x == Object.keys( splits[splits["active_profile"][0]] )[splits["active_profile"][2]]){
+                content += `
+                <tr class="table-success ${color}">
+                <td>${x}</td>
+                <td>${curr}</td>
+                <td>${pre}${diff}</td>
+                <td>${pb} (${best})</td>
+                </tr>`
+            }
+            else{
+                content += `
+                <tr class="${color}">
+                <td>${x}</td>
+                <td>${curr}</td>
+                <td>${pre}${diff}</td>
+                <td>${pb} (${best})</td>
+                </tr>`
+
+            }
     
-            content += `
-            <tr>
-            <td>${x}</td>
-            <td>${curr}</td>
-            <td>${diff}</td>
-            <td>${pb} (${best})</td>
-            </tr>`
         }
+
+        var sum = 0
+        var sum_pb = 0
+        var sum_best = 0
+        for(var x in splits[splits["active_profile"][0]] ){
+            sum += splits[splits["active_profile"][0]][x]["current"]
+            sum_pb += splits[splits["active_profile"][0]][x]["pb"]
+            sum_best += splits[splits["active_profile"][0]][x]["best"]
+        }
+
+        
+        sum_diff = sum - sum_pb
+        if(sum_diff >= 0){
+            pre = "+"+sum_diff
+        }
+
+        content += `
+            <tr class="bg-dark text-light">
+            <td>Summary</td>
+            <td>${sum}</td>
+            <td>${sum_diff}</td>
+            <td>${sum_pb} (${sum_best})</td>
+            </tr>`
     
-        splits["active_profile"] = [name, Object.keys(values)[0], 0]
         document.getElementById("dropdownMenuButton1").innerText = splits["active_profile"][0]
     
         const data = JSON.stringify(splits, null, 8);
@@ -104,13 +154,12 @@ async function load_splits(name){
 
 }
 
-function load_profiles(){
+async function load_profiles(){
 
     var content = ""
 
     for (var x in splits){
         if(x != "active_profile"){
-            console.log(x)
             content += `<li><a class="dropdown-item " onclick='load_splits("${x}")'>${x}</a></li>`
         }
     }
@@ -122,11 +171,35 @@ function load_profiles(){
         document.getElementById("edit").innerHTML = `<button class="btn btn-danger w-100" onclick="editmode()" type="button">End Editmode</button>`
     }
 
-    if(splits["active_profile"][0]){
-        load_splits(splits["active_profile"][0])
-    }
+    await load_splits(splits["active_profile"][0])
     
     document.getElementById("profiles").innerHTML = content
+
+}
+
+async function reset_splits(save=false){
+
+    if(save){
+
+        for(var x in splits[splits["active_profile"][0]] ){
+            splits[splits["active_profile"][0]][x]["pb"] = splits[splits["active_profile"][0]][x]["current"]
+            if(splits[splits["active_profile"][0]][x]["current"] < splits[splits["active_profile"][0]][x]["best"]){
+                splits[splits["active_profile"][0]][x]["best"] = splits[splits["active_profile"][0]][x]["current"]
+            }
+        }
+
+    }
+
+    for(var x in splits[splits["active_profile"][0]] ){
+        splits[splits["active_profile"][0]][x]["current"] = 0
+        // splits[splits["active_profile"][0]][x]["pb"]
+        // splits[splits["active_profile"][0]][x]["best"]
+    }
+
+    const data = JSON.stringify(splits, null, 8);
+    await savefile('./splits.json', data)
+
+    location.reload()
 
 }
 
@@ -143,8 +216,37 @@ async function add_profile(){
 
 }
 
-function set_split(){
-    console.log()
+async function set_split(){
+
+    var splits = require("./splits.json")
+
+    if( splits["active_profile"][2] >= ( Object.keys( splits[splits["active_profile"][0]] ).length-1 ) ){
+
+
+        var answer = window.confirm("Save data?");
+        if (answer) {
+            splits["active_profile"][2] = 0
+            reset_splits(true)
+
+        }
+        else {
+            splits["active_profile"][2] = 0
+            reset_splits()           
+        }
+
+    }
+    else{
+        var splits = require("./splits.json")
+
+        splits["active_profile"][2] += 1
+
+    }
+
+    
+    const data = JSON.stringify(splits, null, 8);
+    await savefile("./splits.json", data)
+
+    location.reload()
 }
 
 async function editmode(){
@@ -167,7 +269,6 @@ async function editmode(){
 
 async function remove_split(name){
 
-    console.log(splits[splits["active_profile"][0]])
     delete splits[splits["active_profile"][0]][name]
 
     const data = JSON.stringify(splits, null, 8);
@@ -227,6 +328,26 @@ async function renameKey ( oldKey, newKey ) {
 
     location.reload()
   }
+
+
+async function get_hit(hit){
+
+    var splitname = Object.keys(splits[splits["active_profile"][0]]) [splits["active_profile"][2]]
+
+    if(hit){
+        splits[splits["active_profile"][0]][splitname]["current"] += 1
+    }
+    else{
+        if((splits[splits["active_profile"][0]][splitname]["current"] - 1) >= 0){
+            splits[splits["active_profile"][0]][splitname]["current"] -= 1
+        }
+    }
+    
+    const data = JSON.stringify(splits, null, 8);
+    await savefile('./splits.json', data)
+
+    location.reload()
+}
 
 // async function up(index){
 
