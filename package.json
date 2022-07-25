@@ -4,7 +4,8 @@
   "description": "HitCounter for Hitless Speedruns",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build": "electron-packager . hitcounter-by-mecke_dev --overwrite --platform=win32"
   },
   "keywords": [
     "hitless",
@@ -15,8 +16,11 @@
   "author": "Mecke_Dev",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^16.0.6"
+    "electron": "^19.0.6",
+    "electron-packager": "^15.5.1"
   },
   "dependencies": {
+    "gkm": "^0.2.0",
+    "keycode": "^2.2.1"
   }
 }

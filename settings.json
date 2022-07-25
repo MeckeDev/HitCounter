@@ -1,7 +1,15 @@
 {
         "window": {
-                "width": 500,
-                "height": 700
+                "width": 567,
+                "height": 725
         },
+        "hotkeys": {
+                "hk_add_hit": "NumPad Add",
+                "hk_remove_hit": "NumPad Subtract",
+                "hk_reset_hit": "Eingabe",
+                "hk_down_split": "NumPad 2",
+                "hk_up_split": "NumPad 8"
+        },
+        "edit_hk": false,
         "edit": false
 }

@@ -10,16 +10,17 @@
 </head>
 <body onload=load_profiles()>
     <div class="input-group mb-3">
-        <input type="text" class="form-control" id="new_profile" placeholder="Profile-Name">
+        <input style="min-width: 150px;" type="text" class="form-control" id="new_profile" placeholder="Profile-Name">
         <button class="btn btn-success" onclick="add_profile()" type="button">New Profile</button>
     </div>
 
-    <div class="w-100">
+
+    <!-- <div class="w-100">
         <button class="btn btn-warning m-2" onclick="set_split()"> TEST SPLIT </button>
         <button class="btn btn-danger m-2" onclick="get_hit(true)"> GIVE HIT </button>
         <button class="btn btn-danger m-2" onclick="get_hit(false)"> REMOVE HIT </button>
         <button class="btn btn-danger m-2" onclick="reset_splits()"> RESET </button>
-    </div>
+    </div> -->
 
     <div id="edit">
     </div>
@@ -42,5 +43,14 @@
 </body>
 
 <script src="./logic.js"></script>
+<script>
 
+function check_enter(event) {
+        console.log(event.keyCode)
+    if (event.keyCode === 13) {
+        event.preventDefault();
+        new_split();
+    }
+};
+</script>
 </html>
